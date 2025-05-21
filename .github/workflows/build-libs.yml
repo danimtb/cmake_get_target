@@ -1,6 +1,7 @@
 name: Manual Build of myLib and use_my_lib_in_another_project
 
 on:
+  pull_request:
   workflow_dispatch:
 
 jobs:
