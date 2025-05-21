@@ -1,0 +1,33 @@
+name: Manual Build of myLib and use_my_lib_in_another_project
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up CMake
+        uses: jwlawson/actions-setup-cmake@v1
+
+      - name: Build myLib
+        run: |
+          cd myLib
+          mkdir build
+          cd build
+          cmake ..
+          cmake --build .
+          cmake --install . --prefix .
+
+      - name: Build use_my_lib_in_another_project
+        run: |
+          cd use_my_lib_in_another_project
+          mkdir build
+          cd build
+          cmake .. -DCMAKE_INSTALL_PREFIX=../../myLib/build/
+          cmake --build .
